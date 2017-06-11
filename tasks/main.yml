@@ -11,7 +11,7 @@
     - lxd-tools
 
 - name: verify if ZFS pool exists
-  shell: zpool list {{ lxd_zfs_pool_name }}
+  shell: zfs list {{ lxd_zfs_dataset_name }}
   register: zfspool
   ignore_errors: true
 
@@ -23,7 +23,7 @@
   when: zfspool.rc != 0
 
 - name: create new zpool for lxd
-  command: "zpool create {{ lxd_zfs_pool_name }} /usr/lib/lxd/zfs.img"
+  command: "zpool create {{ lxd_zfs_dataset_name }} /usr/lib/lxd/zfs.img"
   when: zfspool.rc != 0
 
 - name: verify if lxd is configured to use ZFS
@@ -32,7 +32,7 @@
   ignore_errors: true
 
 - name: configure lxd to use zfs
-  command: "lxd init --storage-backend zfs --storage-pool {{ lxd_zfs_pool_name }} --auto"
+  command: "lxd init --storage-backend zfs --storage-pool {{ lxd_zfs_dataset_name }} --auto"
   when: lxcinfo.rc != 0
 
 - name: configure lxd bridge
