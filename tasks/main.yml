@@ -63,7 +63,7 @@
   register: imagelist
 
 - name: pre copy lxc images
-  include: "lxc-image-copy.yml current={{ imagelist }} image={{ item.i }} alias={{ item.alias }}"
+  include_tasks: "lxc-image-copy.yml current={{ imagelist }} image={{ item.i }} alias={{ item.alias }}"
   with_items: "{{ lxd_preloadimages }}"
 
 - name: list existing lxc images
@@ -77,7 +77,7 @@
   register: lxclist
 
 - name: preconfigure lxc containers
-  include: "lxc-createcontainers.yml guest={{ outer_item.guest }} template={{ outer_item.template }}"
+  include_tasks: "lxc-createcontainers.yml guest={{ outer_item.guest }} template={{ outer_item.template }}"
   with_items: "{{ lxd_preconfigure }}"
   loop_control:
     loop_var: outer_item
